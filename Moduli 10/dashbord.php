@@ -12,8 +12,9 @@
         th, td {
             padding: 10px 20px;
         }
+    </style>
     </head>
-<body>
+    <body>
     <?php
     include_once('config.php');
     $sql="SELECT * FROM users";
@@ -27,6 +28,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Surname</th>
+            <th>Update</th>
             </thead>
         <tbody>
             <?php
@@ -37,7 +39,8 @@
                     <td><?= $user['name'];?></td>
                     <td><?= $user['email'];?></td>
                     <td><?= $user['username'];?></td>
-                </tr>
+                    <td><a href='delete.php?id=<?= $user['id'];?>'>Delete</a> | <a href='update.php?id=<?= $user['id'];?>'>Update</a></td>
+                </tr>              
                 <?php
             }
             ?>
@@ -46,4 +49,4 @@
 </body>
 </html>
 
- 
+

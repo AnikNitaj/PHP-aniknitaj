@@ -1,52 +1,40 @@
 <?php
+include 'config.php';
 
-$user="root";
-$pass="";
-$server="localhost";
-$dbname="db personal project";
+$error = '';
 
-try {
-    
-    $conn = new PDO("mysql:host=$server;dbname=$dbname",$user,$pass);
-    echo "Connected successfully";
-
-} catch (PDOException $e) {
-    echo "error: " . $e->getMessage();
-}
-
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'] ?? '';
+    $identifier = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
 
-    // Validate inputs
-    if (empty($email) || empty($password)) {
-        $error = "Email and password are required!";
-    } else {
-        try {
-            // Fetch user from database
-            $stmt = $conn->prepare("SELECT * FROM users WHERE email = :email");
-            $stmt->bindParam(':email', $email);
-            $stmt->execute();
-            $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if ($user_data && password_verify($password, $user_data['password'])) {
-                $success = "Login successful!";
-                session_start();
-                $_SESSION['user_id'] = $user_data['id'];
-                $_SESSION['username'] = $user_data['username'];
-                $_SESSION['email'] = $user_data['email'];
-                // Redirect to dashboard after 2 seconds
-                header("Refresh: 2; url=dashboard.php");
-            } else {
-                $error = "Invalid email or password!";
-            }
-        } catch (PDOException $e) {
-            $error = "Error: " . $e->getMessage();
+    if ($identifier === ADMIN_USERNAME && $password === ADMIN_PASSWORD) {
+        $_SESSION['admin_logged_in'] = true;
+        $_SESSION['username'] = $identifier;
+        header('Location: admin_dashboard.php');
+        exit();
+    }
+
+    try {
+        $stmt = $conn->prepare("SELECT id, username, email, password FROM users WHERE username = :ident OR email = :ident LIMIT 1");
+        $stmt->bindParam(':ident', $identifier);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['user_logged_in'] = true;
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['email'] = $user['email'];
+            header('Location: index.php');
+            exit();
+        } else {
+            $error = 'Invalid username/email or password';
         }
+    } catch (PDOException $e) {
+        $error = 'Database error';
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -54,141 +42,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log In</title>
+    <title>Admin Login</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            background: white;
-            padding: 30px;
-            border: 2px solid #0066cc;
-            width: 100%;
-            max-width: 350px;
-        }
-
-        h2 {
-            text-align: center;
-            color: black;
-            margin-bottom: 25px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: black;
-            font-size: 14px;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #0066cc;
-            font-size: 14px;
-        }
-
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="password"]:focus {
-            outline: none;
-            border: 2px solid #0066cc;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #0066cc;
-            color: white;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        button:hover {
-            background-color: #0052a3;
-        }
-
-        .error {
-            color: black;
-            background-color: white;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-left: 4px solid black;
-        }
-
-        .success {
-            color: black;
-            background-color: white;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-left: 4px solid #0066cc;
-        }
-
-        .signup-link {
-            text-align: center;
-            margin-top: 15px;
-            color: black;
-            font-size: 14px;
-        }
-
-        .signup-link a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-
-        .signup-link a:hover {
-            text-decoration: underline;
-        }
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:#111;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:20px}
+        .login-container{background:#fff;padding:24px;border:1px solid #e6e6e6;width:100%;max-width:360px}
+        h1{text-align:center;font-size:1.25rem;margin-bottom:18px}
+        .form-group{margin-bottom:12px}
+        label{display:block;margin-bottom:6px;color:#222}
+        input{width:100%;padding:10px;border:1px solid #ccc;border-radius:4px}
+        button{width:100%;padding:10px;border:1px solid #aaa;background:#f5f5f5;cursor:pointer}
+        .error-message{background:#fff;color:#900;padding:10px;border-left:4px solid #900;margin-bottom:12px}
+        .back-link{text-align:center;margin-top:12px}
+        .back-link a{text-decoration:none;color:#222}
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Log In</h2>
-
-        <?php if (isset($error)): ?>
-            <div class="error"><?php echo htmlspecialchars($error); ?></div>
+    <div class="login-container">
+        <h1>Admin Login</h1>
+        
+        <?php if ($error): ?>
+            <div class="error-message"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
 
-        <?php if (isset($success)): ?>
-            <div class="success"><?php echo htmlspecialchars($success); ?></div>
-        <?php endif; ?>
-
-        <form method="POST" action="">
+        <form method="POST">
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
             </div>
 
             <div class="form-group">
-                <label for="password">Password:</label>
+                <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
             </div>
 
-            <button type="submit">Log In</button>
+            <button type="submit">Login</button>
         </form>
 
-        <div class="signup-link">
-            Don't have an account? <a href="signup.php">Sign Up</a>
+        <div class="back-link">
+            <a href="index.php">← Back to Gallery</a>
         </div>
     </div>
 </body>

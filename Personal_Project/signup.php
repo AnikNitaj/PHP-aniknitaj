@@ -57,114 +57,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            background: white;
-            padding: 30px;
-            border: 2px solid #0066cc;
-            width: 100%;
-            max-width: 350px;
-        }
-
-        h2 {
-            text-align: center;
-            color: black;
-            margin-bottom: 25px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: black;
-            font-size: 14px;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #0066cc;
-            font-size: 14px;
-        }
-
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="password"]:focus {
-            outline: none;
-            border: 2px solid #0066cc;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #0066cc;
-            color: white;
-            border: none;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        button:hover {
-            background-color: #0052a3;
-        }
-
-        .error {
-            color: black;
-            background-color: white;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-left: 4px solid black;
-        }
-
-        .success {
-            color: black;
-            background-color: white;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-left: 4px solid #0066cc;
-        }
-
-        .login-link {
-            text-align: center;
-            margin-top: 15px;
-            color: black;
-            font-size: 14px;
-        }
-
-        .login-link a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-
-        .login-link a:hover {
-            text-decoration: underline;
-        }
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:#111;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:16px}
+        .signup-container{background:#fff;border:1px solid #e6e6e6;padding:20px;border-radius:6px;width:100%;max-width:420px}
+        h1{font-size:1.2rem;margin:0 0 12px 0;text-align:center}
+        .form-group{margin-bottom:12px}
+        label{display:block;margin-bottom:6px}
+        input{width:100%;padding:10px;border:1px solid #ccc;border-radius:4px}
+        button{width:100%;padding:10px;border:1px solid #bbb;background:#f8f8f8;cursor:pointer}
+        .error{padding:10px;background:#fff8f8;color:#900;margin-bottom:10px}
+        .success{padding:10px;background:#f8fff8;color:#080;margin-bottom:10px}
+        .login-link{text-align:center;margin-top:10px}
+        .login-link a{text-decoration:none;color:inherit}
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Create Account</h2>
+    <div class="signup-container">
+        <h1>Sign Up</h1>
 
         <?php if (isset($error)): ?>
             <div class="error"><?php echo htmlspecialchars($error); ?></div>

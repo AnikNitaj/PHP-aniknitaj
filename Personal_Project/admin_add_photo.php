@@ -66,28 +66,101 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Photo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         *{box-sizing:border-box;margin:0;padding:0}
-        body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:#111}
-        .container{max-width:600px;margin:24px auto;padding:12px}
-        .form-card{background:#fff;border:1px solid #e6e6e6;padding:18px;border-radius:4px}
-        h1{margin:0 0 12px 0;font-size:1.1rem}
-        .form-group{margin-bottom:12px}
-        label{display:block;margin-bottom:6px}
-        input[type=text],textarea,select{width:100%;padding:10px;border:1px solid #ccc;border-radius:4px}
-        textarea{min-height:100px}
-        select{font-family:inherit}
-        .button-group{display:flex;gap:8px;margin-top:12px}
-        button,a.btn{flex:1;padding:10px;border:1px solid #ccc;background:#f8f8f8;text-decoration:none;color:inherit;border-radius:4px;cursor:pointer}
+        body{
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background:#ffffff;
+            color:#1d1d1f;
+        }
+        header{
+            padding:20px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:24px;
+            background:#f5f5f7;
+            border-radius:0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        header h1{
+            font-size:1.75rem;
+            margin:0;
+            font-weight:700;
+            letter-spacing: -0.02em;
+        }
+        .header-controls{
+            display:flex;
+            align-items:center;
+            gap:16px;
+        }
+        .btn-group{display:flex;gap:8px}
+        a.btn,button{
+            padding:10px 16px;
+            border:none;
+            background:#0A84FF;
+            color:#fff;
+            text-decoration:none;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:600;
+            font-size:0.95rem;
+            transition: all 0.2s ease;
+        }
+        a.btn:hover,button:hover{
+            background:#0071E3;
+            box-shadow: 0 4px 12px rgba(10,132,255,0.3);
+        }
+        a.btn.secondary{
+            background:#e6e6e6;
+            color:#1d1d1f;
+        }
+        a.btn.secondary:hover{
+            background:#d0d0d0;
+        }
+        .container{max-width:600px;margin:0 auto;padding:20px}
+        .form-card{background:#ffffff;padding:24px;border-radius:12px;box-shadow: 0 1px 3px rgba(0,0,0,0.08)}
+        h2{margin:0 0 16px 0;font-size:1.5rem;font-weight:700}
+        .form-group{margin-bottom:16px}
+        label{display:block;margin-bottom:8px;font-weight:500;color:#1d1d1f}
+        input[type=text],textarea,select{
+            width:100%;
+            padding:12px;
+            border:1px solid #e0e0e0;
+            border-radius:8px;
+            font-size:1rem;
+            font-family:inherit;
+            transition: all 0.2s ease;
+        }
+        input[type=text]:focus,textarea:focus,select:focus{
+            outline:none;
+            border-color:#0A84FF;
+            box-shadow: 0 0 0 3px rgba(10,132,255,0.1);
+        }
+        textarea{min-height:100px;resize:vertical}
+        .button-group{display:flex;gap:8px;margin-top:20px}
+        button,a.btn{flex:1;padding:12px;border:none;background:#0A84FF;text-decoration:none;color:#fff;border-radius:8px;cursor:pointer;font-weight:600}
         button:disabled{background:#e6e6e6;color:#999;cursor:not-allowed}
-        .success{padding:10px;background:#f8fff8;color:#080;margin-bottom:10px}
-        .error{padding:10px;background:#fff8f8;color:#900;margin-bottom:10px}
+        button:hover:not(:disabled){background:#0071E3;box-shadow: 0 4px 12px rgba(10,132,255,0.3)}
+        .success{padding:12px;background:#EFF;color:#007500;margin-bottom:16px;border-radius:8px;border-left:4px solid #007500}
+        .error{padding:12px;background:#FEE;color:#D70015;margin-bottom:16px;border-radius:8px;border-left:4px solid #D70015}
+        .warning{padding:12px;background:#FFF8E1;color:#B8860B;margin-bottom:16px;border-radius:8px;border-left:4px solid #B8860B}
     </style>
 </head>
 <body>
+    <header>
+        <h1>Add Photo</h1>
+        <div class="header-controls">
+            <div class="btn-group">
+                <a href="admin_dashboard.php" class="btn secondary">← Back</a>
+                <a href="logout.php" class="btn secondary">Logout</a>
+            </div>
+        </div>
+    </header>
     <div class="container">
         <div class="form-card">
-            <h1>Add New Photo</h1>
+            <h2>Add New Photo</h2>
 
             <?php if ($success): ?>
                 <div class="success"><?php echo htmlspecialchars($success); ?></div>
@@ -121,14 +194,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
 
                 <?php if (empty($available_images)): ?>
-                    <div style="padding:10px;background:#fff8f8;color:#900;margin-bottom:10px">
+                    <div class="warning">
                         No images found in uploads/ folder. Please add image files there first.
                     </div>
                 <?php endif; ?>
 
                 <div class="button-group">
                     <button type="submit" <?php echo empty($available_images) ? 'disabled' : ''; ?>>Add Photo</button>
-                    <a href="admin_dashboard.php" class="btn-secondary">Cancel</a>
+                    <a href="admin_dashboard.php" class="btn secondary">Cancel</a>
                 </div>
             </form>
         </div>

@@ -8,7 +8,6 @@ $dbname="db personal project";
 try {
     
     $conn = new PDO("mysql:host=$server;dbname=$dbname",$user,$pass);
-    echo "Connected successfully";
 
 } catch (PDOException $e) {
     echo "error: " . $e->getMessage();
@@ -56,24 +55,121 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         *{box-sizing:border-box;margin:0;padding:0}
-        body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:#111;display:flex;justify-content:center;align-items:center;min-height:100vh;padding:16px}
-        .signup-container{background:#fff;border:1px solid #e6e6e6;padding:20px;border-radius:6px;width:100%;max-width:420px}
-        h1{font-size:1.2rem;margin:0 0 12px 0;text-align:center}
-        .form-group{margin-bottom:12px}
-        label{display:block;margin-bottom:6px}
-        input{width:100%;padding:10px;border:1px solid #ccc;border-radius:4px}
-        button{width:100%;padding:10px;border:1px solid #bbb;background:#f8f8f8;cursor:pointer}
-        .error{padding:10px;background:#fff8f8;color:#900;margin-bottom:10px}
-        .success{padding:10px;background:#f8fff8;color:#080;margin-bottom:10px}
-        .login-link{text-align:center;margin-top:10px}
-        .login-link a{text-decoration:none;color:inherit}
+        body{
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: #ffffff; 
+            color:#1d1d1f;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            min-height:100vh;
+            padding:16px;
+        }
+        .signup-container{
+            background:#ffffff;
+            padding:32px;
+            border-radius:12px;
+            width:100%;
+            max-width:380px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        h1{
+            font-size:1.75rem;
+            margin:0 0 8px 0;
+            text-align:center;
+            font-weight:700;
+            letter-spacing: -0.02em;
+        }
+        .subtitle{
+            text-align:center;
+            color:#666;
+            margin:0 0 28px 0;
+            font-size:0.95rem;
+        }
+        .form-group{margin-bottom:16px}
+        label{
+            display:block;
+            margin-bottom:8px;
+            font-weight:500;
+            font-size:0.95rem;
+            color:#1d1d1f;
+        }
+        input{
+            width:100%;
+            padding:12px;
+            border:1px solid #e0e0e0;
+            border-radius:8px;
+            font-size:1rem;
+            font-family: inherit;
+            color:#1d1d1f;
+        }
+        input:focus{
+            outline:none;
+            border-color:#0A84FF;
+            box-shadow: 0 0 0 3px rgba(10,132,255,0.1);
+        }
+        button{
+            width:100%;
+            padding:12px;
+            border:none;
+            background:#0A84FF;
+            color:#fff;
+            font-size:1rem;
+            font-weight:600;
+            border-radius:8px;
+            cursor:pointer;
+            transition: all 0.2s ease;
+            margin-top:8px;
+        }
+        button:hover{
+            background:#0071E3;
+            box-shadow: 0 4px 12px rgba(10,132,255,0.3);
+        }
+        button:active{
+            transform: scale(0.98);
+        }
+        .error{
+            padding:12px;
+            background:#FEE;
+            color:#D70015;
+            margin-bottom:16px;
+            border-radius:8px;
+            font-size:0.95rem;
+            border-left:4px solid #D70015;
+        }
+        .success{
+            padding:12px;
+            background:#EFF;
+            color:#007500;
+            margin-bottom:16px;
+            border-radius:8px;
+            font-size:0.95rem;
+            border-left:4px solid #007500;
+        }
+        .login-link{
+            text-align:center;
+            margin-top:16px;
+            color:#333;
+            font-size:0.95rem;
+        }
+        .login-link a{
+            text-decoration:none;
+            color:#0A84FF;
+            font-weight:600;
+            transition: color 0.2s ease;
+        }
+        .login-link a:hover{
+            color:#0071E3;
+        }
     </style>
 </head>
 <body>
     <div class="signup-container">
-        <h1>Sign Up</h1>
+        <h1>Create Account</h1>
+        <p class="subtitle">Join our photo gallery</p>
 
         <?php if (isset($error)): ?>
             <div class="error"><?php echo htmlspecialchars($error); ?></div>
@@ -108,7 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
 
         <div class="login-link">
-            Already have an account? <a href="login.php">Log In</a>
+            Already have an account? <a href="login.php">Sign In</a>
         </div>
     </div>
 </body>
